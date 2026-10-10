@@ -5,8 +5,8 @@ for Deutsche Kraniche Virtual.
 Keep it small, public-safe, and useful to both people and coding agents.
 
 - Read `README.md` and the relevant document in `docs/` before editing.
-- Keep accepted guidance in `main`; put proposals and unfinished work in issues or
-  branches. Do not add session transcripts, scratch plans, or generated reports.
+- Keep accepted guidance in `main`; use branches and draft pull requests for
+  unfinished work. Do not add session transcripts, scratch plans, or generated reports.
 - Publish only contributor-facing guidance and documentation of this repository's
   tooling. Keep internal identity and access conventions, organization structure,
   infrastructure plans, inventories, and operational runbooks out of this repository.

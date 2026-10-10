@@ -1,0 +1,27 @@
+name: Change request
+description: Propose a feature, improvement, or documentation change.
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Match the request to this repository's visibility. Keep internal access
+        details, private operational information, and sensitive data out of public issues.
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Desired outcome
+      description: Who needs this, and what problem should it solve?
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: What observable behavior would make the change complete?
+    validations:
+      required: true
+  - type: textarea
+    id: constraints
+    attributes:
+      label: Constraints and alternatives
+      description: Include compatibility, cost, dependencies, and alternatives if relevant.

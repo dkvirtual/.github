@@ -1,0 +1,54 @@
+name: Repository baseline
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  repo-readiness:
+    name: Repository readiness
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Check out the caller repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Check the structural baseline
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import fnmatch
+          from pathlib import Path
+          import subprocess
+          import sys
+
+          required = (
+              "README.md", "AGENTS.md", ".editorconfig",
+              ".github/CODEOWNERS", ".github/dependabot.yml",
+          )
+          errors = []
+          for name in required:
+              path = Path(name)
+              if not path.is_file() or not path.read_text(encoding="utf-8").strip():
+                  errors.append(f"Missing or empty required file: {name}")
+
+          tracked = subprocess.check_output(["git", "ls-files", "-z"]).decode().split("\0")
+          examples = {".env.example", ".env.sample", ".env.template"}
+          for name in filter(None, tracked):
+              base = Path(name).name
+              environment = base == ".env" or base.startswith(".env.")
+              state = any(fnmatch.fnmatch(base, pattern) for pattern in (
+                  "*.tfstate", "*.tfstate.*", "*.tfplan",
+              ))
+              if (environment and base not in examples) or state:
+                  errors.append(f"Remove sensitive/generated file from Git: {name}")
+
+          for error in errors:
+              print(error, file=sys.stderr)
+          if errors:
+              sys.exit(1)
+          print("Structural baseline passed; complete the human readiness checklist separately.")
+          PY

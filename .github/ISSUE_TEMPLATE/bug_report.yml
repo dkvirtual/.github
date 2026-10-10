@@ -1,0 +1,34 @@
+name: Bug report
+description: Report a reproducible problem using non-sensitive information.
+body:
+  - type: markdown
+    attributes:
+      value: |
+        For vulnerabilities or exposed credentials, use the repository's security
+        policy instead. Never attach production data, private logs, or access tokens.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What happened, and what did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: Give the smallest set of steps or example that shows the problem.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version or commit
+      description: Include relevant runtime or browser versions when useful.
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Include sanitized errors or screenshots only if they help reproduce it.

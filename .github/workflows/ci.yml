@@ -42,3 +42,29 @@ jobs:
           printf '%s  %s\n' "$ACTIONLINT_SHA256" "${tool_dir}/actionlint.tar.gz" | sha256sum --check --strict
           tar -xzf "${tool_dir}/actionlint.tar.gz" -C "$tool_dir" actionlint
           "${tool_dir}/actionlint" -color
+  node-container:
+    name: Node ${{ matrix.node }} in browser container
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    strategy:
+      matrix:
+        node: ["22.23.3", "24.21.0"]
+    container:
+      image: mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/setup-node
+        with:
+          node-version: ${{ matrix.node }}
+          registry-url: https://npm.pkg.github.com
+          scope: "@dkvirtual"
+      - name: Verify exact runtime and isolated configuration
+        env:
+          EXPECTED_NODE: ${{ matrix.node }}
+        run: |
+          test "$(node --version)" = "v$EXPECTED_NODE"
+          case "$(command -v node)" in "$RUNNER_TEMP"/node-runtime.*/bin/node) ;; *) exit 1 ;; esac
+          test "$(npm config get @dkvirtual:registry)" = https://npm.pkg.github.com
+          test "$(stat -c '%a' "$NPM_CONFIG_USERCONFIG")" = 600

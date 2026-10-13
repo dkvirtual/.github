@@ -31,15 +31,15 @@ runs:
         if [ -z "$version" ]; then version="$(tr -d '[:space:]' < "$NODE_VERSION_FILE")"; fi
         version="${version#v}"
         case "$version" in
-          22.23.3) checksum=df450af89261115ef9f9e3830c3eeb2cc9213b63c720b1af623cb5dcbe2e02de ;;
-          24.21.0) checksum=fd8e59d5a511510f6a298afb548f18c7d2b1be404d8b4a27d94fbe49f56cb2d6 ;;
+          22.23.3) checksum=1084aa36196bba4c3a5e69a1ee388a6e4ff729dad09445fbcd434b28fe3c24af ;;
+          24.21.0) checksum=6e1db87ef58b8819e5d5402eff1536491b18edd8eb7bee5ef7897876e88dc5ff ;;
           *) echo "Unsupported Node version; review and pin its official checksum first." >&2; exit 1 ;;
         esac
         tool_dir="$(mktemp -d "$RUNNER_TEMP/node-runtime.XXXXXX")"
-        curl --fail --silent --show-error --location --retry 3 "https://nodejs.org/dist/v$version/node-v$version-linux-x64.tar.xz" -o "$tool_dir/node.tar.xz"
-        printf '%s  %s\n' "$checksum" "$tool_dir/node.tar.xz" | sha256sum --check --strict
-        tar -xJf "$tool_dir/node.tar.xz" --strip-components=1 -C "$tool_dir"
-        rm "$tool_dir/node.tar.xz"
+        curl --fail --silent --show-error --location --retry 3 "https://nodejs.org/dist/v$version/node-v$version-linux-x64.tar.gz" -o "$tool_dir/node.tar.gz"
+        printf '%s  %s\n' "$checksum" "$tool_dir/node.tar.gz" | sha256sum --check --strict
+        tar -xzf "$tool_dir/node.tar.gz" --strip-components=1 -C "$tool_dir"
+        rm "$tool_dir/node.tar.gz"
         echo "$tool_dir/bin" >> "$GITHUB_PATH"
         "$tool_dir/bin/node" --version
         if [ -n "$NPM_REGISTRY" ]; then

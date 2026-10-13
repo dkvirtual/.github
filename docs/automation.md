@@ -4,10 +4,15 @@
 
 | Workflow | Interface | Behavior |
 | --- | --- | --- |
-| `.github/workflows/repository-baseline.yml` | `workflow_call`; no inputs or secrets | Checks the caller's local guidance/ownership files and tracked sensitive/generated filenames. |
-| `.github/workflows/secret-scan.yml` | `workflow_call`; no inputs or secrets | Scans the caller's fetched Git history with checksum-verified Gitleaks. |
+| `.github/workflows/repository-baseline.yml` | `workflow_call`; optional `runner-labels` JSON array, no secrets | Checks the caller's local guidance/ownership files and tracked sensitive/generated filenames. |
+| `.github/workflows/secret-scan.yml` | `workflow_call`; optional `runner-labels` JSON array, no secrets | Scans the caller's fetched Git history with checksum-verified Gitleaks. |
 
-Both workflows use GitHub-hosted `ubuntu-24.04` runners and `contents: read`.
+Both workflows default to GitHub-hosted `ubuntu-24.04` runners and use `contents: read`.
+Trusted private callers may pass a JSON array through `with.runner-labels`.
+Self-hosted callers must reject fork pull requests before scheduling jobs; the
+shared workflows also reject fork PRs when a custom runner is selected.
+This public repository retains GitHub-hosted checks, including external PRs.
+Do not enable access to private self-hosted runners for public repositories.
 They check out the caller's repository without retaining Git credentials and
 report check results. They have no deployment or repository-administration role.
 

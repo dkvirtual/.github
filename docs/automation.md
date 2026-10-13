@@ -75,3 +75,16 @@ repository, environment, and job. Prefer short-lived credentials where supported
 Use native secret scanning/push protection when available, alongside Gitleaks.
 Findings require remediation; rotate leaked credentials rather than only suppressing
 the scanner. Any scanner allowlist must identify its reason and reviewer.
+
+## Job-local Node runtime
+
+`.github/actions/setup-node` installs an exact, checksum-pinned Linux x64 Node
+runtime in the job's temporary directory. It avoids runner-wide tool-cache writes,
+which can mix ownership between container and native jobs. Pass `node-version` or
+`node-version-file`; currently reviewed releases are 22.23.3 and 24.21.0. A version
+change must update its official SHA-256 here before consumers adopt it.
+
+Private package callers may also set `registry-url: https://npm.pkg.github.com`
+and `scope: '@dkvirtual'`; only their npm install/publish step receives
+`NODE_AUTH_TOKEN`. The generated npm configuration contains an environment-variable
+reference, never a credential. Pin this composite action to a reviewed commit.

@@ -33,6 +33,7 @@ runs:
         case "$version" in
           22.23.3) checksum=1084aa36196bba4c3a5e69a1ee388a6e4ff729dad09445fbcd434b28fe3c24af ;;
           24.21.0) checksum=6e1db87ef58b8819e5d5402eff1536491b18edd8eb7bee5ef7897876e88dc5ff ;;
+          24.22.1) checksum=eb6728e77c576a35162c122c45ccadf224d89ff00abc8dae46cc2897c6002d7c ;;
           *) echo "Unsupported Node version; review and pin its official checksum first." >&2; exit 1 ;;
         esac
         tool_dir="$(mktemp -d "$RUNNER_TEMP/node-runtime.XXXXXX")"

@@ -81,8 +81,11 @@ the scanner. Any scanner allowlist must identify its reason and reviewer.
 `.github/actions/setup-node` installs an exact, checksum-pinned Linux x64 Node
 runtime in the job's temporary directory. It avoids runner-wide tool-cache writes,
 which can mix ownership between container and native jobs. Pass `node-version` or
-`node-version-file`; currently reviewed releases are 22.23.3 and 24.21.0. A version
-change must update its official SHA-256 here before consumers adopt it.
+`node-version-file`; reviewed releases are 22.23.3, 24.21.0 and 24.22.1. For
+Node 24 consumers, use 24.22.1 or a later reviewed security release; it includes
+the [October 2026 security fixes](https://nodejs.org/en/blog/vulnerability/october-2026-security-releases).
+Older pins remain for explicit consumer migration, not as a recommendation.
+A version change must update its official SHA-256 here before consumers adopt it.
 
 Private package callers may also set `registry-url: https://npm.pkg.github.com`
 and `scope: '@dkvirtual'`; only their npm install/publish step receives

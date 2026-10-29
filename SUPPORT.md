@@ -1,5 +1,8 @@
 # Getting help
 
+For account, application, or community assistance, use the
+[Deutsche Kraniche Virtual HelpDesk](https://helpdesk.dkvirtual.com).
+
 Start with the affected repository's README, troubleshooting guide, and existing
 issues, where enabled. Open an issue there for a reproducible bug or a proposed
 change. Include the version and a minimal example using synthetic data. If issues
